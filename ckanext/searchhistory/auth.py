@@ -1,10 +1,10 @@
 import ckan.plugins as p
-import ckan.new_authz as new_authz
+import ckan.authz as authz
 
 
 def search_add(context, data_dict):
     username = context.get('user')
-    user = new_authz.get_user_id_for_username(username, allow_none=True)
+    user = authz.get_user_id_for_username(username, allow_none=True)
     if user is None:
         return {'success': False, 'msg': 'Not authorized'}
     return {'success': True}

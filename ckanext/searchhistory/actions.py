@@ -3,7 +3,7 @@ import json
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
 import ckan.lib.navl.dictization_functions as df
-import ckan.new_authz as new_authz
+import ckan.authz as authz
 
 import db
 
@@ -34,7 +34,7 @@ def search_add(context, data_dict):
     data, errors = df.validate(data_dict, schema_add, context)
 
     username = context.get('user')
-    user_id = new_authz.get_user_id_for_username(username, allow_none=False)
+    user_id = authz.get_user_id_for_username(username, allow_none=False)
 
     search_history = db.SearchHistory()
     search_history.params = data.get('params')
@@ -59,7 +59,7 @@ def search_list(context, data_dict):
     tk.check_access('search_history_list', context, data_dict)
 
     username = context.get('user')
-    user = new_authz.get_user_id_for_username(username, allow_none=False)
+    user = authz.get_user_id_for_username(username, allow_none=False)
     # Get the limit and put a hard upper limit on it
     limit = data_dict.get('limt', 10)
     if limit > 25:
